@@ -11,7 +11,6 @@ export default function Articles(props) {
   // we should render a Navigate from react router dom to login screen (React Router v.6)
   const token = localStorage.getItem('token');
   console.log('token:', token);
-  
 
   useEffect(() => {
     // ✨ grab the articles here, on first render only
@@ -32,13 +31,17 @@ export default function Articles(props) {
       .catch(err=>{
         console.log(err);
       })
-  }, [])
+  }, []);
 
+
+  //for axios.get
   if (!token) {
     return (
       <Navigate to='/'/>
     )
   }
+
+
 
   // console.log('ARTICLES STATE', articles)
 
