@@ -86,7 +86,7 @@ export default function App() {
           <Route path="articles" element={
             <>
               <ArticleForm />
-              <Articles />
+              <Articles articles={articles} setArticles={setArticles}/>
             </>
           } />
         </Routes>

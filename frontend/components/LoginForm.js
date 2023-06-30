@@ -34,6 +34,7 @@ export default function LoginForm(props) {
       })
       .catch(err=>{
         console.log(err)
+        localStorage.removeItem('token');
       })
   }
 
