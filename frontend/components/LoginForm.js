@@ -9,8 +9,11 @@ const initialFormValues = {
 }
 export default function LoginForm(props) {
   const [values, setValues] = useState(initialFormValues);
-  // ✨ where are my props? Destructure them here
-  // const {loginUrl} = props; -- idk what props to do
+  // ✨ where are my props? Destructure them here --????????
+  const {loginUrl} = props; 
+  // -- idk what props to do
+
+
   //instead of useHistory -- in onSubmit -- to navigate to another page after successful logging 
   const navigate = useNavigate();
 
@@ -26,7 +29,7 @@ export default function LoginForm(props) {
     console.log('login values', values);
     axios
       //server url/API that you make the request to get info 
-      .post('http://localhost:9000/api/login', values)
+      .post(loginUrl, values)
       .then(resp=>{
         console.log('RESPONSE', resp);
         localStorage.setItem('token', resp.data.token);

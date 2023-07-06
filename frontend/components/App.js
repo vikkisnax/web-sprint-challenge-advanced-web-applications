@@ -13,13 +13,13 @@ export default function App() {
   // ✨ MVP can be achieved with these states
   const [message, setMessage] = useState('')
   const [articles, setArticles] = useState([])
-  const [currentArticleId, setCurrentArticleId] = useState()
+  const [currentArticle, setCurrentArticle] = useState()
   const [spinnerOn, setSpinnerOn] = useState(false)
 
   // ✨ Research `useNavigate` in React Router v.6
   const navigate = useNavigate()
   const redirectToLogin = () => { /* ✨ implement */ }
-  const redirectToArticles = () => { /* ✨ implement */ }
+  const redirectToArticles = () => { /* ✨ implement */}
 
   const logout = () => {
     // ✨ implement
@@ -80,13 +80,13 @@ export default function App() {
         <Routes>
           <Route 
             path="/" 
-            element={<LoginForm />} 
+            element={<LoginForm loginUrl={loginUrl} />} 
             // idk what prop to ^ pass here...
           />
           <Route path="articles" element={
             <>
-              <ArticleForm />
-              <Articles articles={articles} setArticles={setArticles}/>
+              <ArticleForm currentArticle={currentArticle} setCurrentArticle={setCurrentArticle}/>
+              <Articles articles={articles} setArticles={setArticles} setCurrentArticle={setCurrentArticle}/>
             </>
           } />
         </Routes>
