@@ -5,7 +5,7 @@ import axios from 'axios'
 
 export default function Articles(props) {
   // ✨ where are my props? Destructure them here -- articles state from App
-  const {articles, setArticles, setCurrentArticle} = props;
+  const {articles, setArticles, currentArticle, setCurrentArticle, deleteArticle} = props;
 
   // ✨ implement conditional logic: if no token exists ---- DO THISSSSS!
   // we should render a Navigate from react router dom to login screen (React Router v.6)
@@ -43,8 +43,6 @@ export default function Articles(props) {
 
 
 
-  // console.log('ARTICLES STATE', articles)
-
   return (
     // ✨ fix the JSX: replace `Function.prototype` with actual functions
     // and use the articles prop to generate articles
@@ -64,7 +62,10 @@ export default function Articles(props) {
                 <div>
                   {/* setting the current article to have the info of the article that we clicked on  */}
                   <button disabled={false} onClick={()=>{setCurrentArticle(art)}}>Edit</button>
-                  <button disabled={false} onClick={Function.prototype}>Delete</button>
+                  <button disabled={false} onClick={(e) =>  {
+                    e.preventDefault()
+                    deleteArticle(art.article_id)
+                  }}>Delete</button>
                 </div>
               </div>
             )

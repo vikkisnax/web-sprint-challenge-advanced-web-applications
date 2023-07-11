@@ -67,20 +67,21 @@ export default function ArticleForm(props) {
         // If `currentArticle` exists, it means we're updating an existing post
 
         // Add any additional properties specific to updating an article
-        payload.id = currentArticle.id; // Assuming there's an `id` property in the `currentArticle`
+        // payload.id = currentArticle.id; // Assuming there's an `id` property in the `currentArticle`
+        console.log('currentArticle:', currentArticle)
 
         // Make the API request to update the post
         const response = await axios
-          .put(`http://localhost:9000/api/articles/{currentArticle.id}` + currentArticle.id, payload,       
+          .put(`http://localhost:9000/api/articles/${currentArticle.article_id}`, payload,       
           {
             headers: {
             authorization: token
           }
         })
-          
         
-        // Handle the success response
-        console.log('Post updated successfully:', response.data);
+      // Handle the success response
+      console.log('Post updated successfully:', response.data);
+
       } else {
         // If `currentArticle` is falsy, it means we're creating a new post
 
@@ -91,9 +92,8 @@ export default function ArticleForm(props) {
           authorization: token
         }
       });
-
         
-        // Handle the success response
+      // Handle the success response
         console.log('New post created successfully:', response.data);
       }
 
@@ -109,9 +109,7 @@ export default function ArticleForm(props) {
       // Handle any errors that occur during the API request
       console.error('Error submitting the post:', error);
   }
-
   }
-
 
   const isDisabled = () => {
     console.log("isDisabled test", values)
