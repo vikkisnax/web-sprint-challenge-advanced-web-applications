@@ -5,6 +5,7 @@ import LoginForm from './LoginForm'
 import Message from './Message'
 import ArticleForm from './ArticleForm'
 import Spinner from './Spinner'
+import axios from 'axios'
 
 const articlesUrl = 'http://localhost:9000/api/articles'
 const loginUrl = 'http://localhost:9000/api/login'
@@ -13,13 +14,19 @@ export default function App() {
   // ✨ MVP can be achieved with these states
   const [message, setMessage] = useState('')
   const [articles, setArticles] = useState([])
-  const [currentArticleId, setCurrentArticleId] = useState()
+  const [currentArticle, setCurrentArticle] = useState()
   const [spinnerOn, setSpinnerOn] = useState(false)
 
   // ✨ Research `useNavigate` in React Router v.6
   const navigate = useNavigate()
   const redirectToLogin = () => { /* ✨ implement */ }
-  const redirectToArticles = () => { /* ✨ implement */ }
+  const redirectToArticles = () => { /* ✨ implement */}
+
+
+
+  // I need to pass the functions in the components to the functions below then I can do the spinner
+
+
 
   const logout = () => {
     // ✨ implement
@@ -61,8 +68,26 @@ export default function App() {
     // You got this!
   }
 
-  const deleteArticle = article_id => {
-    // ✨ implement
+  //I think i have to move axios requests inside the other comps over here and pass them as props?
+  //fix this!!
+  const deleteArticle = (id) => {
+    console.log('id:', id)
+    const token = localStorage.getItem('token');
+    console.log('APP token:', token)
+    axios
+      .delete(`http://localhost:9000/api/articles/${id}`, {
+            headers: {
+            authorization: token
+          }
+      })
+      
+      .then(res=>{
+        console.log('APP DELETE RESP', res);
+        // Handle the success response
+      })
+      .catch(err =>{
+        console.log("APP DELETE ERROR", err)
+      }, [])
   }
 
   return (
@@ -78,11 +103,21 @@ export default function App() {
           <NavLink id="articlesScreen" to="/articles">Articles</NavLink>
         </nav>
         <Routes>
-          <Route path="/" element={<LoginForm />} />
+          <Route 
+            path="/" 
+            element={<LoginForm loginUrl={loginUrl} />} 
+            // idk what prop to ^ pass here...
+          />
           <Route path="articles" element={
             <>
-              <ArticleForm />
-              <Articles />
+              <ArticleForm currentArticle={currentArticle} setCurrentArticle={setCurrentArticle}/>
+              <Articles 
+                articles={articles} 
+                setArticles={setArticles} 
+                currentArticle={currentArticle}
+                setCurrentArticle={setCurrentArticle}
+                deleteArticle={deleteArticle}
+              />
             </>
           } />
         </Routes>

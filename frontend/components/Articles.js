@@ -1,16 +1,47 @@
-import React, { useEffect } from 'react'
-import { Navigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import PT from 'prop-types'
+import axios from 'axios'
 
 export default function Articles(props) {
-  // ✨ where are my props? Destructure them here
+  // ✨ where are my props? Destructure them here -- articles state from App
+  const {articles, setArticles, currentArticle, setCurrentArticle, deleteArticle} = props;
 
-  // ✨ implement conditional logic: if no token exists
-  // we should render a Navigate to login screen (React Router v.6)
+  // ✨ implement conditional logic: if no token exists ---- DO THISSSSS!
+  // we should render a Navigate from react router dom to login screen (React Router v.6)
+  const token = localStorage.getItem('token');
+  // console.log('token:', token);
 
   useEffect(() => {
     // ✨ grab the articles here, on first render only
-  })
+    // const token = localStorage.getItem('token');
+    axios
+      .get(
+        'http://localhost:9000/api/articles', 
+        { headers: {
+            authorization: token
+          }
+        }
+      )
+      .then(resp =>{
+        console.log('ARTICLES', resp);
+        //store the response? in the state from App - prop - idk if i need to do this
+        setArticles(resp.data.articles);
+      })
+      .catch(err=>{
+        console.log(err);
+      })
+  }, []);
+
+
+  //for axios.get
+  if (!token) {
+    return (
+      <Navigate to='/'/>
+    )
+  }
+
+
 
   return (
     // ✨ fix the JSX: replace `Function.prototype` with actual functions
@@ -18,9 +49,9 @@ export default function Articles(props) {
     <div className="articles">
       <h2>Articles</h2>
       {
-        ![].length
+        !articles.length
           ? 'No articles yet'
-          : [].map(art => {
+          : articles.map(art => {
             return (
               <div className="article" key={art.article_id}>
                 <div>
@@ -29,8 +60,12 @@ export default function Articles(props) {
                   <p>Topic: {art.topic}</p>
                 </div>
                 <div>
-                  <button disabled={true} onClick={Function.prototype}>Edit</button>
-                  <button disabled={true} onClick={Function.prototype}>Delete</button>
+                  {/* setting the current article to have the info of the article that we clicked on  */}
+                  <button disabled={false} onClick={()=>{setCurrentArticle(art)}}>Edit</button>
+                  <button disabled={false} onClick={(e) =>  {
+                    e.preventDefault()
+                    deleteArticle(art.article_id)
+                  }}>Delete</button>
                 </div>
               </div>
             )
